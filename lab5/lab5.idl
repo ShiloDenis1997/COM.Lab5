@@ -1,0 +1,18 @@
+// lab5.idl : IDL source for lab5
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (lab5.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(D4502EF9-4285-40A1-8466-BFCB5872D490),
+	version(1.0),
+]
+library lab5Lib
+{
+	importlib("stdole2.tlb");
+};
+
