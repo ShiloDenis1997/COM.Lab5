@@ -31,6 +31,9 @@
     <ClCompile Include="lab5_i.c">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="EquationSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -48,6 +51,9 @@
     <ClInclude Include="lab5_i.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="EquationSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="lab5.rc">
@@ -63,6 +69,9 @@
     </None>
     <None Include="lab5.def">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="EquationSolver.rgs">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

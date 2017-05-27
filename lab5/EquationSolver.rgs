@@ -1,0 +1,25 @@
+HKCR
+{
+	lab5.EquationSolver.1.1 = s 'EquationSolver Class'
+	{
+		CLSID = s '{8D115AFD-6B86-4E03-BB07-9712AF92521E}'
+	}
+	lab5.EquationSolver.1 = s 'EquationSolver Class'
+	{		
+		CurVer = s 'lab5.EquationSolver.1.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {8D115AFD-6B86-4E03-BB07-9712AF92521E} = s 'EquationSolver Class'
+		{
+			ProgID = s 'lab5.EquationSolver.1.1'
+			VersionIndependentProgID = s 'lab5.EquationSolver.1'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{D4502EF9-4285-40A1-8466-BFCB5872D490}'
+			Version = s '1.0'
+		}
+	}
+}

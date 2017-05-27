@@ -8,11 +8,27 @@ import "oaidl.idl";
 import "ocidl.idl";
 
 [
+	object,
+	uuid(7AB6113D-A0E1-47B6-A0F3-3F5FD553F3E0),
+	oleautomation,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IEquationSolver : IUnknown{
+};
+[
 	uuid(D4502EF9-4285-40A1-8466-BFCB5872D490),
 	version(1.0),
 ]
 library lab5Lib
 {
 	importlib("stdole2.tlb");
+	[
+		uuid(8D115AFD-6B86-4E03-BB07-9712AF92521E)		
+	]
+	coclass EquationSolver
+	{
+		[default] interface IEquationSolver;
+	};
 };
 
