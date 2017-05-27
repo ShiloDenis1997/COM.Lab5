@@ -9,12 +9,25 @@ import "ocidl.idl";
 
 [
 	object,
+	uuid(4EB926CA-665F-49FA-ACBB-F45408E691E0),
+	oleautomation,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IEquationPrinter : IUnknown {
+	HRESULT PrintLMatrix();
+	HRESULT PrintUMatrix();
+};
+[
+	object,
 	uuid(7AB6113D-A0E1-47B6-A0F3-3F5FD553F3E0),
 	oleautomation,
 	nonextensible,
 	pointer_default(unique)
 ]
 interface IEquationSolver : IUnknown{
+	HRESULT LoadMatrix([in] double** a, [in] int n);
+	HRESULT SolveWithVector([in] double* b, [out] double * result);
 };
 [
 	uuid(D4502EF9-4285-40A1-8466-BFCB5872D490),
@@ -29,6 +42,7 @@ library lab5Lib
 	coclass EquationSolver
 	{
 		[default] interface IEquationSolver;
+		interface IEquationPrinter;
 	};
 };
 

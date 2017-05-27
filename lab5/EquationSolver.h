@@ -21,20 +21,22 @@ using namespace ATL;
 class ATL_NO_VTABLE CEquationSolver :
 	public CComObjectRootEx<CComSingleThreadModel>,
 	public CComCoClass<CEquationSolver, &CLSID_EquationSolver>,
-	public IEquationSolver
+	public IEquationSolver,
+	public IEquationPrinter
 {
 public:
 	CEquationSolver()
 	{
 	}
 
-DECLARE_REGISTRY_RESOURCEID(IDR_EQUATIONSOLVER)
+	DECLARE_REGISTRY_RESOURCEID(IDR_EQUATIONSOLVER)
 
-DECLARE_NOT_AGGREGATABLE(CEquationSolver)
+	DECLARE_NOT_AGGREGATABLE(CEquationSolver)
 
-BEGIN_COM_MAP(CEquationSolver)
-	COM_INTERFACE_ENTRY(IEquationSolver)
-END_COM_MAP()
+	BEGIN_COM_MAP(CEquationSolver)
+		COM_INTERFACE_ENTRY(IEquationSolver)
+		COM_INTERFACE_ENTRY(IEquationPrinter)
+	END_COM_MAP()
 
 
 
@@ -53,6 +55,32 @@ public:
 
 
 
+
+	// IEquationPrinter Methods
+public:
+	STDMETHOD(PrintLMatrix)()
+	{
+		// Add your function implementation here.
+		return E_NOTIMPL;
+	}
+	STDMETHOD(PrintUMatrix)()
+	{
+		// Add your function implementation here.
+		return E_NOTIMPL;
+	}
+
+	// IEquationTrickSolver Methods
+public:
+	STDMETHOD(LoadMatrix)(double ** a, int n)
+	{
+		// Add your function implementation here.
+		return E_NOTIMPL;
+	}
+	STDMETHOD(SolveWithVector)(double * b, double * result)
+	{
+		// Add your function implementation here.
+		return E_NOTIMPL;
+	}
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(EquationSolver), CEquationSolver)

@@ -23,3 +23,6 @@
 #include <atlbase.h>
 #include <atlcom.h>
 #include <atlctl.h>
+
+extern "C" const GUID ;
+extern "C" const GUID ;
