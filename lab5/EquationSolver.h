@@ -17,6 +17,7 @@ using namespace ATL;
 
 
 // CEquationSolver
+void compTrace(const char* msg) { printf("Component: %s\n", msg); }
 
 class ATL_NO_VTABLE CEquationSolver :
 	public CComObjectRootEx<CComSingleThreadModel>,
@@ -27,6 +28,10 @@ class ATL_NO_VTABLE CEquationSolver :
 public:
 	CEquationSolver()
 	{
+		m_N = 0;
+		m_LUmatr = nullptr;
+		m_pRow = nullptr;
+		m_pCol = nullptr;
 	}
 
 	DECLARE_REGISTRY_RESOURCEID(IDR_EQUATIONSOLVER)
@@ -49,38 +54,37 @@ public:
 
 	void FinalRelease()
 	{
+		compTrace("Release component");
 	}
 
-public:
-
-
-
+private:
+	bool MakeLU(double **a, int* pr, int* pc, int n) const;
+	void SolveL(double* y) const;
+	void SolveU(double* x) const;
+	void DeleteMatrix();
+	static void swapColumns(double **a, int c1, int c2, int n);
+	int m_N;
+	int *m_pRow;
+	int *m_pCol;
+	double **m_LUmatr;
 
 	// IEquationPrinter Methods
 public:
-	STDMETHOD(PrintLMatrix)()
-	{
-		// Add your function implementation here.
-		return E_NOTIMPL;
-	}
-	STDMETHOD(PrintUMatrix)()
-	{
-		// Add your function implementation here.
-		return E_NOTIMPL;
-	}
+	STDMETHOD(PrintLMatrix)();
+	//{
+	//	// Add your function implementation here.
+	//	return E_NOTIMPL;
+	//}
+	STDMETHOD(PrintUMatrix)();
+	//{
+	//	// Add your function implementation here.
+	//	return E_NOTIMPL;
+	//}
 
 	// IEquationTrickSolver Methods
 public:
-	STDMETHOD(LoadMatrix)(double ** a, int n)
-	{
-		// Add your function implementation here.
-		return E_NOTIMPL;
-	}
-	STDMETHOD(SolveWithVector)(double * b, double * result)
-	{
-		// Add your function implementation here.
-		return E_NOTIMPL;
-	}
+	STDMETHOD(LoadMatrix)(double ** a, int n);
+	STDMETHOD(SolveWithVector)(double * b, double * result);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(EquationSolver), CEquationSolver)
