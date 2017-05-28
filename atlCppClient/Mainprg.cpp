@@ -5,6 +5,7 @@
 #include <iostream>
 #include <objbase.h>
 #include "lab5_i.h"
+#include <atlsafe.h>
 
 using namespace std;
 
@@ -17,6 +18,70 @@ double matr[N][N] =
 };
 
 void trace(const char* msg) { cout << "Client: \t\t" << msg << endl; }
+
+void FromVariantToArray(VARIANT Var, double* Vec, int n)
+{
+	CComSafeArray<double> SafeArray;
+	SafeArray.Attach(Var.parray);
+	for (LONG Index = 0; Index < n; Index++)
+	{
+		Vec[Index] = SafeArray.GetAt(Index);
+	}
+}
+
+void FromVariantToMatrix(VARIANT Var, double** Vec, int n)
+{
+	CComSafeArray<double> SafeArray;
+	SafeArray.Attach(Var.parray);
+	LONG aIndex[2];
+	for (LONG i = 0; i < n; i++)
+		for (LONG j = 0; j < n; j++)
+		{
+			aIndex[0] = i;
+			aIndex[1] = j;
+			SafeArray.MultiDimGetAt(aIndex, Vec[i][j]);
+		}
+}
+
+void ToVariant(double *Vec, VARIANT* var, int n)
+{
+	var->vt = VT_ARRAY | VT_R8;
+
+	SAFEARRAYBOUND rgsabound[1];
+	rgsabound[0].cElements = n;
+	rgsabound[0].lLbound = 0;
+
+	CComSafeArray<double> *safeArray = new CComSafeArray<double>(rgsabound, 1);
+	for (int i = 0; i < n; i++)
+		{
+			safeArray->SetAt(i, Vec[i]);
+		}
+	safeArray->CopyTo(&(var->parray));
+}
+
+void ToVariant(double **Vec, VARIANT* var, int n)
+{
+	var->vt = VT_ARRAY | VT_R8;
+
+	SAFEARRAYBOUND rgsabound[2];
+	rgsabound[0].cElements = n;
+	rgsabound[0].lLbound = 0;
+	rgsabound[1].cElements = n;
+	rgsabound[1].lLbound = 0;
+
+	CComSafeArray<double> *safeArray = new CComSafeArray<double>(rgsabound, 2);
+	LONG aIndex[2];
+	//var->parray = SafeArrayCreate(VT_R8, 1, rgsabound);
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+		{
+			aIndex[0] = i;
+			aIndex[1] = j;
+			safeArray->MultiDimSetAt(aIndex, Vec[i][j]);
+		}
+	safeArray->CopyTo(&(var->parray));	
+}
+
 
 //
 // main function
@@ -69,10 +134,14 @@ int main()
 			}
 		}
 
-		pIEquationSolver->LoadMatrix(m, N);
+		VARIANT matrA, vectorB, vectorResult;
+		ToVariant(m, &matrA, N);
+		pIEquationSolver->LoadMatrix(matrA, N);
 		double *result = new double[N];
 		double *bVector = new double[N] {14, 20, 7};
-		pIEquationSolver->SolveWithVector(bVector, result);
+
+		ToVariant(bVector, &vectorB, N);
+		pIEquationSolver->SolveWithVector(vectorB, &vectorResult, N);
 		if (pIEquationPrinter != nullptr)
 		{
 			cout << "L matrix: " << endl;
@@ -82,6 +151,7 @@ int main()
 			pIEquationPrinter->Release();
 		}
 
+		FromVariantToArray(vectorResult, result, N);
 		cout << "Result: " << endl;
 		for (int i = 0; i < N; i++)
 			cout << result[i] << endl;

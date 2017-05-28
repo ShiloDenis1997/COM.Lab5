@@ -26,8 +26,8 @@ interface IEquationPrinter : IUnknown {
 	pointer_default(unique)
 ]
 interface IEquationSolver : IUnknown{
-	HRESULT LoadMatrix([in] double** a, [in] int n);
-	HRESULT SolveWithVector([in] double* b, [out] double * result);
+	HRESULT LoadMatrix([in] VARIANT a, [in] int n);
+	HRESULT SolveWithVector([in] VARIANT b, [out] VARIANT* result, int n);
 };
 [
 	uuid(D4502EF9-4285-40A1-8466-BFCB5872D490),

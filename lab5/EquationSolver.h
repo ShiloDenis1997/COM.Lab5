@@ -71,20 +71,12 @@ private:
 	// IEquationPrinter Methods
 public:
 	STDMETHOD(PrintLMatrix)();
-	//{
-	//	// Add your function implementation here.
-	//	return E_NOTIMPL;
-	//}
 	STDMETHOD(PrintUMatrix)();
-	//{
-	//	// Add your function implementation here.
-	//	return E_NOTIMPL;
-	//}
 
 	// IEquationTrickSolver Methods
 public:
-	STDMETHOD(LoadMatrix)(double ** a, int n);
-	STDMETHOD(SolveWithVector)(double * b, double * result);
+	STDMETHOD(LoadMatrix)(VARIANT a, int n);
+	STDMETHOD(SolveWithVector)(VARIANT b, VARIANT* result, int n);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(EquationSolver), CEquationSolver)

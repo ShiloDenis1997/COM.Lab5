@@ -2,9 +2,58 @@
 
 #include "stdafx.h"
 #include "EquationSolver.h"
+#include <atlsafe.h>
 #include <iostream>
 
 // CEquationSolver
+
+void FromVariantToArray(VARIANT Var, double* Vec, int n)
+{
+	CComSafeArray<double> SafeArray;
+	SafeArray.Attach(Var.parray);
+	for (LONG Index = 0; Index < n; Index++)
+	{
+		double value = SafeArray.GetAt(Index);
+		Vec[Index] = value;
+		printf("elem: %.2lf\n", Vec[Index]);
+	}
+	SafeArray.Detach();
+}
+
+void FromVariantToMatrix(VARIANT Var, double** Vec, int n)
+{
+	CComSafeArray<double> SafeArray;
+	SafeArray.Attach(Var.parray);
+	LONG aIndex[2];
+	for (LONG i = 0; i < n; i++)
+		for (LONG j = 0; j < n; j++)
+		{
+			aIndex[0] = i;
+			aIndex[1] = j;
+			SafeArray.MultiDimGetAt(aIndex, Vec[i][j]);
+			/*printf("%.2lf\n", Vec[i][j]);*/
+		}
+	SafeArray.Detach();
+}
+
+void ToVariant(double *Vec, VARIANT* var, int n)
+{
+	var->vt = VT_ARRAY | VT_R8;
+	/*for (int i = 0; i < n; i++)
+		printf("vec[%d] = %.2lf\n", i, Vec[i]);*/
+	SAFEARRAYBOUND rgsabound[1];
+	rgsabound[0].cElements = n;
+	rgsabound[0].lLbound = 0;
+
+	CComSafeArray<double> *safeArray = new CComSafeArray<double>(rgsabound, 1);
+	for (int i = 0; i < n; i++)
+	{
+		safeArray->SetAt(i, Vec[i]);
+	}
+	safeArray->CopyTo(&(var->parray));
+}
+
+
 
 HRESULT CEquationSolver::PrintLMatrix()
 {
@@ -61,21 +110,31 @@ HRESULT CEquationSolver::PrintUMatrix()
 
 		std::cout << std::endl;
 	}
+	return S_OK;
 }
 
-HRESULT CEquationSolver::LoadMatrix(double** a, int n)
+HRESULT CEquationSolver::LoadMatrix(VARIANT a, int n)
 {
+	compTrace("Loading matrix...");
 	DeleteMatrix();
 	m_N = n;
 	m_LUmatr = new double*[n];
 	for (int i = 0; i < n; i++)
 	{
 		m_LUmatr[i] = new double[n];
+	}
+	FromVariantToMatrix(a, m_LUmatr, m_N);
+
+	printf("Matrix in comp: \n");
+	for (int i = 0; i < n; i++)
+	{
 		for (int j = 0; j < n; j++)
 		{
-			m_LUmatr[i][j] = a[i][j];
+			printf("%.2lf ", m_LUmatr[i][j]);
 		}
+		printf("\n");
 	}
+
 	m_pRow = new int[n];
 	m_pCol = new int[n];
 	if (MakeLU(m_LUmatr, m_pRow, m_pCol, n))
@@ -83,25 +142,38 @@ HRESULT CEquationSolver::LoadMatrix(double** a, int n)
 	return E_FAIL;
 }
 
-HRESULT CEquationSolver::SolveWithVector(double* b, double* result)
+HRESULT CEquationSolver::SolveWithVector(VARIANT b, VARIANT* result, int n)
 {
+	compTrace("Solving equation system");
+	double *buffer = new double[m_N];
 	double *temp = new double[m_N];
+	FromVariantToArray(b, buffer, m_N);
 	for (int i = 0; i < m_N; i++)
 	{
-		temp[i] = b[m_pRow[i]];
+		temp[i] = buffer[m_pRow[i]];
 	}
+
 	SolveL(temp);
 	SolveU(temp);
+	printf("Permutated answer:\n");
+	for (int i = 0; i < m_N; i++)
+		printf("%.2lf ", temp[i]);
+	printf("\n");
+	double *tempRes = new double[m_N];
 	for (int i = 0; i < m_N; i++)
 	{
-		result[m_pCol[i]] = temp[i];
+		tempRes[m_pCol[i]] = temp[i];
 	}
+	ToVariant(tempRes, result, n);
+	delete[] tempRes;
+	delete[] buffer;
 	delete[] temp;
 	return S_OK;
 }
 
 bool CEquationSolver::MakeLU(double ** a, int * pr, int * pc, int n) const
 {
+	printf("Making LU...\n");
 	for (int i = 0; i < n; i++)
 		pr[i] = pc[i] = i;
 	for (int k = 0; k <= n - 2; k++)
