@@ -12,29 +12,30 @@ namespace csharpClient
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Hello from C# client");
+            double[,] ar = new[,] {
+                { 1.0, 2, 3 },
+                { 2, 3, 4 },
+                { -2, 3, 1 } };
+            IEquationSolver solver = new EquationSolver();
 
-            unsafe
+            double[] bVector = new double[] { 14, 20, 7 };
+            object ansObj;
+            solver.LoadMatrix(ar, ar.GetLength(0));
+            solver.SolveWithVector(bVector, out ansObj, bVector.Length);
+            double[] ans = ansObj as double[];
+
+            Console.WriteLine("Result: ");
+            for (int i = 0; i < ans.Length; i++)
             {
-
-                double[,] ar = new[,] {
-                    { 1.0, 2, 3 },
-                    { 2, 3, 4 },
-                    { -2, 3, 1 } };
-                IEquationSolver solver = new EquationSolver();
-
-                double[] bVector = new double[] { 14, 20, 7 };
-                object ansObj;
-                solver.LoadMatrix(ar, ar.GetLength(0));
-                solver.SolveWithVector(bVector, out ansObj, bVector.Length);
-                double[] ans = ansObj as double[];
-
-                Console.WriteLine("Result: ");
-                for (int i = 0; i < ans.Length; i++)
-                {
-                    Console.WriteLine(ans[i]);
-                }
+                Console.WriteLine(ans[i]);
             }
 
+            IEquationPrinter printer = solver as IEquationPrinter;
+            Console.WriteLine("L matrix:");
+            printer.PrintLMatrix();
+            Console.WriteLine("U matrix:");
+            printer.PrintUMatrix();
         }
     }
 }

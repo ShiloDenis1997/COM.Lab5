@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "atlCppClient", "atlCppClien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharpClient", "csharpClient\csharpClient.csproj", "{1B9AE208-F0F6-490F-8B85-2ACDA58935CE}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "vbClient", "vbClient\vbClient.vbproj", "{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,18 @@ Global
 		{1B9AE208-F0F6-490F-8B85-2ACDA58935CE}.Release|x64.Build.0 = Release|Any CPU
 		{1B9AE208-F0F6-490F-8B85-2ACDA58935CE}.Release|x86.ActiveCfg = Release|Any CPU
 		{1B9AE208-F0F6-490F-8B85-2ACDA58935CE}.Release|x86.Build.0 = Release|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Debug|x64.Build.0 = Debug|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Debug|x86.Build.0 = Debug|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Release|x64.ActiveCfg = Release|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Release|x64.Build.0 = Release|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Release|x86.ActiveCfg = Release|Any CPU
+		{2A4ECCF1-3976-48C4-8ED7-C0FA6E81D27B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
